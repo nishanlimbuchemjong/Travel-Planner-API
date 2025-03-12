@@ -94,8 +94,8 @@ DATABASES = {
 }
 
 SECRET_KEY = env('SECRET_KEY')
-DEBUG = env('DEBUG', default=False)
-
+DEBUG = env('DEBUG', default=True)
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
