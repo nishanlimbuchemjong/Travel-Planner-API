@@ -22,7 +22,7 @@ def home(request):
     return JsonResponse({"message": "Welcome to the Travel Planner API!"})
 
 urlpatterns = [
-    path('', home),
+    path('/', home),
     path('admin/', admin.site.urls),
     path('api/', include('planner.urls')),
 ]
