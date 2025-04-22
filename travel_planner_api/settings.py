@@ -32,7 +32,6 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = config("ALLOWED_HOSTS").split(",")
-
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
 
 
