@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Destination, Attraction, Itinerary
+from .models import Destination, Attraction, Itinerary, Blog
 
 class AttractionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,3 +19,8 @@ class ItinerarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Itinerary
         fields = ['id', 'trip_name', 'destinations', 'total_trip_duration', 'estimated_budget', 'daily_itinerary']
+
+class BlogSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blog
+        fields = '__all__'
