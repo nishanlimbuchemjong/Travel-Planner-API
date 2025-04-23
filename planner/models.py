@@ -29,3 +29,12 @@ class Itinerary(models.Model):
 
     def __str__(self):
         return self.trip_name
+
+class Blog(models.Model):
+    country_name = models.CharField(max_length=100)
+    image = models.URLField()
+    short_description = models.TextField()
+    article = models.TextField()
+
+    def __str__(self):
+        return self.country_name
