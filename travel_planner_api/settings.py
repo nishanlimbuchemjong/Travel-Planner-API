@@ -15,6 +15,7 @@ import os
 import environ
 import dj_database_url
 from decouple import config
+from decouple import Config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,12 +27,17 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# SECRET_KEY = config('SECRET_KEY')
+
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = config('DEBUG', cast=bool)
+
+# ALLOWED_HOSTS = config("ALLOWED_HOSTS").split(",")
+
 SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
-
-ALLOWED_HOSTS = config("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 print("ALLOWED_HOSTS:", ALLOWED_HOSTS)
 
 
@@ -47,11 +53,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'planner',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -80,13 +88,46 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'travel_planner_api.wsgi.application'
 
-
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': dj_database_url.parse(config('DATABASE_URL'))
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'travelplannerapi_db',
+#         'USER': 'travelplannerapi_db_user',
+#         'PASSWORD': 'GRbsVYuiBGSOFHbka94LGCHxfsEsBJn9',
+#         'HOST': 'dpg-d03h1cjuibrs73a90t30-a.oregon-postgres.render.com',  # usually something like dpg-xyz.region.render.com
+#         'PORT': '5432',
+#         'OPTIONS': {
+#             'sslmode': 'require',
+#         }
+#     }
+# }
+config = Config(repository='env')
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
+        'OPTIONS': {
+            'sslmode': 'require',
+        }
+    }
+}
+
+# DATABASES["Default"] = dj_database_url.parse("postgresql://travelplannerapi_db_user:GRbsVYuiBGSOFHbka94LGCHxfsEsBJn9@dpg-d03h1cjuibrs73a90t30-a/travelplannerapi_db")
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
